@@ -18,7 +18,7 @@ public class TestTopMusic {
 
 	public static void main(String[] args) {
 		Menu menu = new Menu("Top Music", new String[] { "Añadir canción", "Eliminar canción", "Subir un puesto",
-				"Bajar un puesto", "Mostrar Top Music", "Mostrar la canción más escuchada" });
+				"Bajar un puesto", "Mostrar Top Music", "Mostrar la canción más escuchada","Generar lista predefinida" });
 		int opcion;
 
 		do {
@@ -52,11 +52,15 @@ public class TestTopMusic {
 			mostrarTop1();
 			break;
 		case 7:
+			generarPredefinida();
+			break;
+		case 8:
 			salir();
 			break;
 		}
 
 	}
+
 
 	/**
 	 * Añade una cancion al top
@@ -71,7 +75,7 @@ public class TestTopMusic {
 					Teclado.leerEntero("Año grabacion (entre 1950 y el año actual): "));
 			System.out.println("\n\t¡Cancion añadida!\n");
 		} catch (CancionNoValidaException | TituloNoValido | AutorNoValidoException | FechaNoValidaException
-				| PosicionNoValidaException e) {
+				| PosicionNoValidaException | CancionYaExisteException e) {
 			System.err.println(e.getMessage() + "\n\tNo se pudo añadir.\n");
 		}
 
@@ -155,6 +159,20 @@ public class TestTopMusic {
 	private static void mostrarSiVacio() throws TopMusicVacioException {
 		if (topMusic.isEmpty())
 			throw new TopMusicVacioException("\n\tTop Vacío. No se puede realizar la acción.\n");
+	}
+	
+	private static void generarPredefinida() {
+		try {
+			topMusic.annadir(1,"One","Metallica",1988);
+			topMusic.annadir(2,"Dystopia","Megadeth",2016);
+			topMusic.annadir(3,"Beautiful Morning","Machine Head",2007);
+			topMusic.annadir(4,"Halo","Machine Head",2007);
+			
+		} catch (CancionNoValidaException | TituloNoValido | AutorNoValidoException | FechaNoValidaException
+				| PosicionNoValidaException | CancionYaExisteException e) {
+			System.err.println(e.getMessage());
+		}
+		
 	}
 
 	/**

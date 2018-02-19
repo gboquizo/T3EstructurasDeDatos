@@ -2,7 +2,6 @@ package topmusicexcepciones;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import topmusicexcepciones.excepciones.AutorNoValidoException;
 import topmusicexcepciones.excepciones.CancionNoValidaException;
 import topmusicexcepciones.excepciones.FechaNoValidaException;
@@ -24,19 +23,24 @@ public class TopMusic {
 	}
 
 	/**
-	 * Añade una cancion al TopMusic
+	 * Añade una canción al TopMusic
 	 * 
-	 * @param indice, donde alojar la cancion (al usuario se muestra la posicion empezando en 1)
+	 * @param indice, donde alojar la canción (al usuario se muestra la posicion empezando en 1)
+	 * @throws CancionYaExisteException 
 	 */
 	void annadir(int indice, String titulo, String artista, int annoGrabacion)
 			throws CancionNoValidaException, TituloNoValido, AutorNoValidoException, FechaNoValidaException,
-			PosicionNoValidaException {
+			PosicionNoValidaException, CancionYaExisteException {
 
 		if (fueraDeRango(indice - 1)) {
 			throw new PosicionNoValidaException("\n\tError al añadir la canción: la posición no es válida.\n");
 		}
-
-		topMusic.add(indice - 1, new Cancion(titulo, artista, annoGrabacion));
+		
+		Cancion cancion = new Cancion(titulo, artista, annoGrabacion);
+		if (topMusic.contains(cancion))
+			throw new CancionYaExisteException("\nNo se pudo añadir, ya existe la canción");
+		topMusic.add(indice - 1, cancion);
+	
 	}
 
 	/**
@@ -57,9 +61,7 @@ public class TopMusic {
 	/**
 	 * Sube una posicion una cancion
 	 * 
-	 * @param cancion
-	 *            a subir de posicion
-	 * @return 
+	 * @param cancion a subir de posicion
 	 * @throws PosicionNoValidaException
 	 */
 	void subir(int indice) throws PosicionNoValidaException {
@@ -71,7 +73,7 @@ public class TopMusic {
 
 	/**
 	 * Baja una posicion una cancion
-	 * 
+	 *
 	 * @param cancion
 	 * @throws PosicionNoValidaException
 	 */
@@ -87,7 +89,7 @@ public class TopMusic {
 	 * Controla que la canción introducida en el TopMusic no pase de rango
 	 * 
 	 * @param indice
-	 * @return
+	 * @return true o false, en función de la comprobación.
 	 */
 	private boolean fueraDeRango(int indice) {
 		if (!esValida(indice))
@@ -98,8 +100,7 @@ public class TopMusic {
 	/**
 	 * Recoge una posicion valida
 	 * 
-	 * @param indice
-	 *            Indice de la posicion
+	 * @param indice Indice de la posicion
 	 * @return El indice si es valido
 	 */
 	int posicionValida(int indice) {
@@ -168,40 +169,4 @@ public class TopMusic {
 	int size() {
 		return topMusic.size() + 1;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((topMusic == null) ? 0 : topMusic.hashCode());
-		return result;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof TopMusic))
-			return false;
-		TopMusic other = (TopMusic) obj;
-		if (topMusic == null) {
-			if (other.topMusic != null)
-				return false;
-		} else if (!topMusic.equals(other.topMusic))
-			return false;
-		return true;
-	}
-
 }

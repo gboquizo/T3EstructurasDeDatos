@@ -160,6 +160,48 @@ public class Cancion {
 		else
 			this.annoGrabacion = annoGrabacion;
 	}
+	
+	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + annoGrabacion;
+		result = prime * result + ((artista == null) ? 0 : artista.hashCode());
+		result = prime * result + ((titulo == null) ? 0 : titulo.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Cancion))
+			return false;
+		Cancion other = (Cancion) obj;
+		if (annoGrabacion != other.annoGrabacion)
+			return false;
+		if (artista == null) {
+			if (other.artista != null)
+				return false;
+		} else if (!artista.equals(other.artista))
+			return false;
+		if (titulo == null) {
+			if (other.titulo != null)
+				return false;
+		} else if (!titulo.equals(other.titulo))
+			return false;
+		return true;
+	}
 
 	@Override
 	public String toString() {
